@@ -1,0 +1,27 @@
+#:kivy 1.11.1
+
+<EditorWidget>:
+    BoxLayout:
+        width: root.width
+        height: root.height
+        orientation: 'vertical'
+        BoxLayout:
+            size_hint_y: .05
+            Button:
+                size_hint_x: 0.1
+                text: 'Open'
+                on_release:
+            Button:
+                size_hint_x: 0.1
+                text: 'Save'
+                on_release:
+            Button:
+                size_hint_x: 0.1
+                text: 'Run'
+                on_release:
+            Button:
+                size_hint_x: 0.1
+                text: 'Quit'
+                on_release:
+        CodeInput:
+            size_hint_y: .95
