@@ -1,6 +1,7 @@
 #:kivy 1.11.1
 
 <EditorWidget>:
+    id: editor_widget
     BoxLayout:
         width: root.width
         height: root.height
@@ -10,18 +11,19 @@
             Button:
                 size_hint_x: 0.1
                 text: 'Open'
-                on_release:
+                on_release: editor_widget.open(code_input)
             Button:
                 size_hint_x: 0.1
                 text: 'Save'
-                on_release:
+                on_release: editor_widget.save(code_input)
             Button:
                 size_hint_x: 0.1
                 text: 'Run'
-                on_release:
+                on_release: editor_widget.run_code(code_input)
             Button:
                 size_hint_x: 0.1
                 text: 'Quit'
-                on_release:
+                on_release: editor_widget.quit()
         CodeInput:
+            id: code_input
             size_hint_y: .95
