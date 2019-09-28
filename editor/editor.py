@@ -15,18 +15,19 @@ class EditorWidget(Widget):
             self.running_process.kill()
 
     @staticmethod
-    def save(code_input):
+    def save(file_selector, code_input):
         # TODO: Add output file selection
-        out_file = 'outfile.py'
+        out_file = file_selector.path + 'outfile.py'
         with open(out_file, 'w') as f:
             f.write(code_input.text)
         return out_file
 
     @staticmethod
-    def open(code_input):
-        # TODO: Add file selection
-        with open('outfile.py', 'r') as f:
-            code_input.text = f.read()
+    def open(file_selector, code_input):
+        if file_selector.selection:
+            input_file = file_selector.selection[0]
+            with open(input_file, 'r') as f:
+                code_input.text = f.read()
 
     def run_code(self, code_input):
         out_file = EditorWidget.save(code_input)

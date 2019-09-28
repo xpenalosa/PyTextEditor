@@ -6,16 +6,12 @@
         width: root.width
         height: root.height
         orientation: 'vertical'
-        BoxLayout:
+        StackLayout:
             size_hint_y: .05
             Button:
                 size_hint_x: 0.1
-                text: 'Open'
-                on_release: editor_widget.open(code_input)
-            Button:
-                size_hint_x: 0.1
                 text: 'Save'
-                on_release: editor_widget.save(code_input)
+                on_release: editor_widget.save(os_view, code_input)
             Button:
                 size_hint_x: 0.1
                 text: 'Run'
@@ -24,6 +20,12 @@
                 size_hint_x: 0.1
                 text: 'Quit'
                 on_release: editor_widget.quit()
-        CodeInput:
-            id: code_input
+        BoxLayout:
             size_hint_y: .95
+            FileChooserListView:
+                id: os_view
+                size_hint_x: 0.3
+                on_submit: editor_widget.open(os_view, code_input)
+            CodeInput:
+                id: code_input
+                size_hint_x: 0.7
