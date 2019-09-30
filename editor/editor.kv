@@ -11,11 +11,11 @@
             Button:
                 size_hint_x: 0.1
                 text: 'Save'
-                on_release: editor_widget.save(os_view, code_input)
+                on_release: editor_widget.save()
             Button:
                 size_hint_x: 0.1
                 text: 'Run'
-                on_release: editor_widget.run_code(os_view, code_input)
+                on_release: editor_widget.run_code()
             Button:
                 size_hint_x: 0.1
                 text: 'Quit'
@@ -25,7 +25,8 @@
             FileChooserListView:
                 id: os_view
                 size_hint_x: 0.3
-                on_submit: editor_widget.open(os_view, code_input)
-            CodeInput:
-                id: code_input
+                on_submit: editor_widget.open(os_view)
+            TabbedPanel:
+                id: tabbed_panel
                 size_hint_x: 0.7
+                do_default_tab: False
