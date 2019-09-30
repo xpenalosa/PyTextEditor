@@ -68,5 +68,5 @@ class EditorApp(App):
         super(EditorApp, self).__init__()
 
     def build(self):
-        self.title = "PyTextEditor - github.com/fndh/PyTextEditor"
+        self.title = "PyTextEditor - github.com/xpenalosa/PyTextEditor"
         return EditorWidget()
