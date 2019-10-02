@@ -1,31 +1,23 @@
 #:kivy 1.11.1
+#:include editor/components/toolbar/toolbar.kv
 
 <EditorWidget>:
     id: editor_widget
+    width: root.width
+    height: root.height
     BoxLayout:
         width: root.width
         height: root.height
         orientation: 'vertical'
-        StackLayout:
-            size_hint_y: .05
-            Button:
-                size_hint_x: 0.1
-                text: 'Save'
-                on_release: editor_widget.save()
-            Button:
-                size_hint_x: 0.1
-                text: 'Run'
-                on_release: editor_widget.run_code()
-            Button:
-                size_hint_x: 0.1
-                text: 'Quit'
-                on_release: editor_widget.quit()
+        Toolbar:
+            size_hint_y: 0.05
+            controller: editor_widget
         BoxLayout:
             size_hint_y: .95
             FileChooserListView:
                 id: os_view
                 size_hint_x: 0.3
-                on_submit: editor_widget.open(os_view)
+                on_submit: root.open(os_view)
             TabbedPanel:
                 id: tabbed_panel
                 size_hint_x: 0.7

@@ -13,11 +13,11 @@ import os
 
 class EditorWidget(Widget):
 
-    def __init__(self, dirpath):
+    def __init__(self, dir_path):
         super(EditorWidget, self).__init__()
         self.running_process = None
         self.tabbed_panel = self.ids['tabbed_panel']
-        self.ids['os_view'].path = dirpath
+        self.ids['os_view'].path = dir_path
 
     def __del__(self):
         if self.running_process:
@@ -65,10 +65,10 @@ class EditorWidget(Widget):
 
 class EditorApp(App):
 
-    def __init__(self, dirpath):
+    def __init__(self, dir_path):
         super(EditorApp, self).__init__()
-        self.dirpath = dirpath
+        self.dir_path = dir_path
 
     def build(self):
         self.title = "PyTextEditor - github.com/xpenalosa/PyTextEditor"
-        return EditorWidget(self.dirpath)
+        return EditorWidget(self.dir_path)
