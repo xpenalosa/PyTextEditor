@@ -3,6 +3,6 @@ import os
 
 if __name__ == "__main__":
     # Start editor on current folder
-    dirpath = os.getcwd()
-    e = Editor(dirpath)
+    dir_path = os.getcwd()
+    e = Editor(dir_path)
     e.run()
