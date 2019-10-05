@@ -1,0 +1,6 @@
+docutils==0.15.2
+pygments==2.4.2
+pypiwin32==223
+kivy_deps.sdl2==0.1.22
+kivy_deps.glew==0.1.12
+kivy==1.11.1
