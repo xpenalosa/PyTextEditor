@@ -1,0 +1,11 @@
+#:kivy 1.11.1
+
+<Sidebar@Widget>:
+    BoxLayout:
+        width: root.width
+        height: root.height
+        pos: root.pos
+        FileChooserListView:
+            id: os_view
+            size_hint_x: 0.95
+            on_submit: root.controller.open(os_view)

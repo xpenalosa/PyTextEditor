@@ -1,10 +1,9 @@
 #:kivy 1.11.1
 #:include editor/components/toolbar/toolbar.kv
+#:include editor/components/sidebar/sidebar.kv
 
 <EditorWidget>:
     id: editor_widget
-    width: root.width
-    height: root.height
     BoxLayout:
         width: root.width
         height: root.height
@@ -13,12 +12,33 @@
             size_hint_y: 0.05
             controller: editor_widget
         BoxLayout:
-            size_hint_y: .95
-            FileChooserListView:
-                id: os_view
-                size_hint_x: 0.3
-                on_submit: root.open(os_view)
-            TabbedPanel:
-                id: tabbed_panel
-                size_hint_x: 0.7
-                do_default_tab: False
+            size_hint_y: .925
+            Sidebar:
+                id: sidebar
+                size_hint_x: 0.275
+                controller: editor_widget
+            BoxLayout:
+                size_hint_x: 0.675
+                orientation: 'vertical'
+                TabbedPanel:
+                    id: tabbed_panel
+                    size_hint_y: 0.775
+                    do_default_tab: False
+                BoxLayout:
+                    id: console_panel
+                    size_hint_y: 0.175
+                    orientation: 'vertical'
+                    Label:
+                        size_hint_y: 0.1
+                        text: "Console output"
+                        text_size: root.size
+                        halign: 'center'
+                        valign: 'center'
+                    TextInput:
+                        id: console_log
+                        size_hint_y: 0.9
+                        multiline: True
+                        readonly: True
+                        background_color: [0.9, 0.9, 0.9, 1]
+
+

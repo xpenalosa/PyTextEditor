@@ -1,7 +1,7 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
 
-from subprocess import Popen
+from subprocess import Popen, PIPE
 import sys
 
 from editor import utils
@@ -13,7 +13,7 @@ class EditorWidget(Widget):
         super(EditorWidget, self).__init__()
         self.running_process = None
         self.tabbed_panel = self.ids['tabbed_panel']
-        self.ids['os_view'].path = dir_path
+        self.ids['sidebar'].ids['os_view'].path = dir_path
 
     def __del__(self):
         if self.running_process:
@@ -30,9 +30,17 @@ class EditorWidget(Widget):
 
     def run_code(self):
         out_file = self.tabbed_panel.current_tab.full_path
-        self.running_process = Popen(["python", out_file])
-        while self.running_process.poll() is None:
-            self.running_process.wait(0.5)
+        # Clear previous execution output
+        self.ids['console_log'].text = ""
+        # TODO: Avoid blocking. Asyncio?
+        self.running_process = Popen(["python", out_file],
+                                     stdout=PIPE, stderr=PIPE)
+        for line in iter(self.running_process.stdout.readline, b''):
+            self.ids['console_log'].text += f"OUT - {line.decode('utf-8')}"
+
+        for line in iter(self.running_process.stderr.readline, b''):
+            # TODO: Add coloring to errors and output them when they occur
+            self.ids['console_log'].text += f"ERR - {line.decode('utf-8')}"
 
     def quit(self):
         if self.running_process:
