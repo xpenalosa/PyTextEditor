@@ -6,5 +6,5 @@ class Toolbar(Widget):
 
     controller = ObjectProperty()
 
-    def __init__(self):
-        super(Toolbar, self).__init__()
+    def __init__(self, **kwargs):
+        super(Toolbar, self).__init__(**kwargs)

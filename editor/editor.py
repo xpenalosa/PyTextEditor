@@ -5,6 +5,9 @@ from subprocess import Popen, PIPE
 import sys
 
 from editor import utils
+from editor.components.toolbar import toolbar
+from editor.components.sidebar import sidebar
+from editor.components.console import console
 
 
 class EditorWidget(Widget):
@@ -32,8 +35,8 @@ class EditorWidget(Widget):
         out_file = self.tabbed_panel.current_tab.full_path
         console_log = self.ids['console_panel'].ids['console_log']
         # Clear previous execution output
-        console_log.text = ""
-        # TODO: Avoid blocking. Asyncio?
+        self.clear_console_log()
+        # TODO: Avoid blocking. Clock?
         self.running_process = Popen(["python", out_file],
                                      stdout=PIPE, stderr=PIPE)
         for line in iter(self.running_process.stdout.readline, b''):
@@ -42,6 +45,9 @@ class EditorWidget(Widget):
         for line in iter(self.running_process.stderr.readline, b''):
             # TODO: Add coloring to errors and output them when they occur
             console_log.text += f"ERR - {line.decode('utf-8')}"
+
+    def clear_console_log(self):
+        self.ids['console_panel'].ids['console_log'].clear_output()
 
     def quit(self):
         if self.running_process:

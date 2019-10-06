@@ -6,6 +6,6 @@ class Sidebar(Widget):
 
     controller = ObjectProperty()
 
-    def __init__(self):
-        super(Sidebar, self).__init__()
+    def __init__(self, **kwargs):
+        super(Sidebar, self).__init__(**kwargs)
 
