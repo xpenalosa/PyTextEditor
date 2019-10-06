@@ -1,0 +1,19 @@
+#:kivy 1.11.1
+
+<Console@Widget>
+    BoxLayout:
+        width: root.width
+        height: root.height
+        pos: root.pos
+        orientation: 'vertical'
+        Label:
+            size_hint_y: 0.1
+            text: "Console output"
+            text_size: root.size
+            halign: 'center'
+            valign: 'center'
+        CodeInput:
+            id: console_log
+            size_hint_y: 0.9
+            readonly: True
+            background_color: [0.9, 0.92, 0.92, 1]

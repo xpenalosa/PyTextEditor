@@ -1,6 +1,7 @@
 #:kivy 1.11.1
 #:include editor/components/toolbar/toolbar.kv
 #:include editor/components/sidebar/sidebar.kv
+#:include editor/components/console/console.kv
 
 <EditorWidget>:
     id: editor_widget
@@ -24,21 +25,9 @@
                     id: tabbed_panel
                     size_hint_y: 0.775
                     do_default_tab: False
-                BoxLayout:
+                Console:
                     id: console_panel
                     size_hint_y: 0.175
-                    orientation: 'vertical'
-                    Label:
-                        size_hint_y: 0.1
-                        text: "Console output"
-                        text_size: root.size
-                        halign: 'center'
-                        valign: 'center'
-                    TextInput:
-                        id: console_log
-                        size_hint_y: 0.9
-                        multiline: True
-                        readonly: True
-                        background_color: [0.9, 0.9, 0.9, 1]
+
 
 

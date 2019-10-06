@@ -30,17 +30,18 @@ class EditorWidget(Widget):
 
     def run_code(self):
         out_file = self.tabbed_panel.current_tab.full_path
+        console_log = self.ids['console_panel'].ids['console_log']
         # Clear previous execution output
-        self.ids['console_log'].text = ""
+        console_log.text = ""
         # TODO: Avoid blocking. Asyncio?
         self.running_process = Popen(["python", out_file],
                                      stdout=PIPE, stderr=PIPE)
         for line in iter(self.running_process.stdout.readline, b''):
-            self.ids['console_log'].text += f"OUT - {line.decode('utf-8')}"
+            console_log.text += f"OUT - {line.decode('utf-8')}"
 
         for line in iter(self.running_process.stderr.readline, b''):
             # TODO: Add coloring to errors and output them when they occur
-            self.ids['console_log'].text += f"ERR - {line.decode('utf-8')}"
+            console_log.text += f"ERR - {line.decode('utf-8')}"
 
     def quit(self):
         if self.running_process:
