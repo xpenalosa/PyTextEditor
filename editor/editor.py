@@ -35,7 +35,7 @@ class EditorWidget(Widget):
         out_file = self.tabbed_panel.current_tab.full_path
         console_log = self.ids['console_panel'].ids['console_log']
         # Clear previous execution output
-        self.clear_console_log()
+        console_log.clear_output()
         # TODO: Avoid blocking. Clock?
         self.running_process = Popen(["python", out_file],
                                      stdout=PIPE, stderr=PIPE)
@@ -45,9 +45,6 @@ class EditorWidget(Widget):
         for line in iter(self.running_process.stderr.readline, b''):
             # Add error tag to each error line. Limited by implementation
             console_log.text += f"[ERR]{line.decode('utf-8')}[/ERR]"
-
-    def clear_console_log(self):
-        self.ids['console_panel'].ids['console_log'].clear_output()
 
     def quit(self):
         if self.running_process:
