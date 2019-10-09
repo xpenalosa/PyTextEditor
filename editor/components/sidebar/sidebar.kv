@@ -1,11 +1,13 @@
 #:kivy 1.11.1
+#:include editor/components/sidebar/sidebar_file_chooser.kv
 
 <Sidebar>:
+    id: sidebar
     BoxLayout:
         width: root.width
         height: root.height
         pos: root.pos
-        FileChooserListView:
+        SidebarFileChooser:
             id: os_view
+            sidebar: sidebar
             size_hint_x: 0.95
-            on_submit: root.controller.open(os_view)

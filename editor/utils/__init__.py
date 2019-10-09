@@ -1,8 +1,10 @@
+from kivy.extras.highlight import KivyLexer
 from kivy.uix.codeinput import CodeInput
 from kivy.uix.tabbedpanel import TabbedPanelHeader
 
 from pygments.lexers import get_lexer_for_filename
 from pygments.util import ClassNotFound
+from pygments.lexers.special import TextLexer
 
 import os
 
@@ -22,18 +24,35 @@ def code_tab_from_file(file_path):
     code_input = CodeInput()
     with open(file_path, 'r') as f:
         code_input.text = f.read()
-        try:
-            new_lexer = get_lexer_for_filename(file_name)
-        except ClassNotFound:
-            print(f"No lexer for {file_name}!")
-        else:
-            code_input.lexer = new_lexer
+    code_input.lexer = get_code_lexer_for_filename(file_name)
 
     # Add new CodeInput object to the tabbed pane
     th = TabbedPanelHeader(text=file_name)
     th.content = code_input
     th.full_path = file_path
     return th
+
+
+def get_code_lexer_for_filename(file_name):
+    """
+    Get a lexer that can highlight the contents of a file type.
+
+    Select a pygments lexer with the utility function get_lexer_for_filename.
+    If no such lexer exists, check if we opened a KivyLang file (.kv), Otherwise
+    return a dummy lexer without highlighting.
+
+    :param file_name: The name of the file to highlight.
+    :return: An adequate lexer for the file, or a plain lexer if there are none
+    available.
+    """
+    try:
+        lexer = get_lexer_for_filename(file_name)
+    except ClassNotFound:
+        if file_name.split('.')[-1] == "kv":
+            lexer = KivyLexer()
+        else:
+            lexer = TextLexer()
+    return lexer
 
 
 def store_code_tab(code_tab):
@@ -46,24 +65,22 @@ def store_code_tab(code_tab):
         f.write(code_tab.content.text)
 
 
-def get_or_create_tab(tabbed_pane, file_name):
+def get_or_create_tab(file_name):
     """
     Check whether an input file is already loaded as a code tab, or load it.
 
-    :param tabbed_pane: The tabbed pane containing all the loaded tabs.
     :param file_name: The input file name to check or create.
     :return: The code tab corresponding to the input file.
     """
-    code_tab = None
-    # Iterate over open tabs
-    for open_tab in tabbed_pane.tab_list:
-        if open_tab.full_path == file_name:
-            # Tab's full path matches
-            code_tab = open_tab
-            break
-    else:
-        # Did not find tab, create it instead
-        code_tab = code_tab_from_file(file_name)
-        # Add code tab to tabbed panel
-        tabbed_pane.add_widget(code_tab)
+    if file_name in get_or_create_tab.cache.keys():
+        return get_or_create_tab.cache[file_name]
+
+    # Did not find tab, create it instead
+    code_tab = code_tab_from_file(file_name)
+    # Add code tab to tabbed panel
+    get_or_create_tab.cache[file_name] = code_tab
     return code_tab
+
+
+# TODO: Move tab management to its own class
+get_or_create_tab.cache = {}

@@ -6,6 +6,9 @@
         width: root.width
         height: root.height
         ToolbarButton:
+            text: 'New'
+            on_release: root.controller.new()
+        ToolbarButton:
             text: 'Save'
             on_release: root.controller.save()
         ToolbarButton:

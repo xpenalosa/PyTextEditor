@@ -3,6 +3,8 @@ from kivy.uix.widget import Widget
 
 from subprocess import Popen, PIPE
 import sys
+import os
+from pathlib import Path
 
 from editor import utils
 from editor.components.toolbar import toolbar
@@ -22,14 +24,23 @@ class EditorWidget(Widget):
         if self.running_process:
             self.running_process.kill()
 
+    def new(self):
+        # Popup asking for file path and name
+        # FIXME
+        new_file = os.getcwd() + "tmp.py"
+        # Create file in system
+        Path(new_file).touch()
+        # Create or move to tab
+        code_tab = utils.get_or_create_tab(new_file)
+        self.append_tab(code_tab)
+
     def save(self):
         utils.store_code_tab(self.tabbed_panel.current_tab)
 
-    def open(self, file_selector):
-        if file_selector.selection:
-            input_file = file_selector.selection[0]
-            code_tab = utils.get_or_create_tab(self.tabbed_panel, input_file)
-            self.tabbed_panel.switch_to(code_tab, do_scroll=True)
+    def append_tab(self, code_tab):
+        if code_tab not in self.tabbed_panel.tab_list:
+            self.tabbed_panel.add_widget(code_tab)
+        self.tabbed_panel.switch_to(code_tab, do_scroll=True)
 
     def run_code(self):
         out_file = self.tabbed_panel.current_tab.full_path
@@ -61,3 +72,8 @@ class EditorApp(App):
     def build(self):
         self.title = "PyTextEditor - github.com/xpenalosa/PyTextEditor"
         return EditorWidget(self.dir_path)
+
+    def build_config(self, config):
+        config.setdefaults('input', {
+            'mouse': 'mouse,disable_multitouch'
+        })
