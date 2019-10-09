@@ -1,5 +1,6 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
+from kivy.config import Config
 
 from subprocess import Popen, PIPE
 import sys
@@ -10,6 +11,8 @@ from editor import utils
 from editor.components.toolbar import toolbar
 from editor.components.sidebar import sidebar
 from editor.components.console import console
+
+
 
 
 class EditorWidget(Widget):
