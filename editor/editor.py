@@ -1,6 +1,6 @@
 from kivy.app import App
+from kivy.lang import Builder
 from kivy.uix.widget import Widget
-from kivy.config import Config
 
 from subprocess import Popen, PIPE
 import sys
@@ -11,8 +11,38 @@ from editor import utils
 from editor.components.toolbar import toolbar
 from editor.components.sidebar import sidebar
 from editor.components.console import console
+from editor.utils import os_utils
 
+Builder.load_string("""
+#:kivy 1.11.1
 
+<EditorWidget>:
+    id: editor_widget
+    BoxLayout:
+        width: root.width
+        height: root.height
+        orientation: 'vertical'
+        Toolbar:
+            size_hint_y: None
+            height: 30
+            controller: editor_widget
+        BoxLayout:
+            size_hint_y: .925
+            Sidebar:
+                id: sidebar
+                size_hint_x: 0.275
+                controller: editor_widget
+            BoxLayout:
+                size_hint_x: 0.675
+                orientation: 'vertical'
+                TabbedPanel:
+                    id: tabbed_panel
+                    size_hint_y: 0.775
+                    do_default_tab: False
+                Console:
+                    id: console_panel
+                    size_hint_y: 0.175
+""")
 
 
 class EditorWidget(Widget):
@@ -29,8 +59,10 @@ class EditorWidget(Widget):
 
     def new(self):
         # Popup asking for file path and name
+        os_utils.create_save_file_dialog()
+        return
         # FIXME
-        new_file = os.getcwd() + "tmp.py"
+        new_file = os.path.join(os.getcwd(), "tmp.py")
         # Create file in system
         Path(new_file).touch()
         # Create or move to tab

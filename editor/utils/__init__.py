@@ -1,4 +1,5 @@
 from kivy.extras.highlight import KivyLexer
+from kivy.uix.button import Button
 from kivy.uix.codeinput import CodeInput
 from kivy.uix.tabbedpanel import TabbedPanelHeader
 

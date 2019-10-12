@@ -1,7 +1,16 @@
+from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 from kivy.uix.codeinput import CodeInput
 from pygments import highlight
 from pygments.lexers.special import TextLexer
+
+Builder.load_string("""
+#:kivy 1.11.1
+
+<ConsoleLog>
+    readonly: True
+    background_color: [0.9, 0.92, 0.92, 1]
+""")
 
 
 class ConsoleLog(CodeInput):
