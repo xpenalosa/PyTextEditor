@@ -34,6 +34,7 @@ BoxLayout:
             dialog_content=dialog_widget)
 
     def confirm(self):
+        # FIXME text_input not found
         self.callback(self.ids['dialog_content'].ids['text_input'].text)
         self.used_callback = True
         self.dismiss()

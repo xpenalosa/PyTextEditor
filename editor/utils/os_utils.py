@@ -16,6 +16,6 @@ def create_file(file_path):
 
 
 def create_save_file_dialog():
-    dialog = FileChooserDialog(size_hint=(0.5, 0.5))
+    dialog = FileChooserDialog(size_hint=(0.75, 0.75))
     dialog.set_callback(create_file)
     dialog.open()
