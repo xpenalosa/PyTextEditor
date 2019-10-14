@@ -14,6 +14,11 @@ Builder.load_string("""
         BoxLayout:
             id: dialog_content
             height: root.height - 30
+            padding: 5
+            spacing: 5
+            Label:
+                id: placeholder
+                text: "Placeholder"
         BoxLayout:
             id: buttons
             size_hint_y: None
@@ -34,8 +39,9 @@ class OkCancelDialog(Popup):
         super(Popup, self).__init__(**kwargs)
         self.callback = None
         self.used_callback = False
-        # FIXME Customizable dialog content is not displayed
-        self.ids['dialog_content'] = dialog_kwargs if dialog_kwargs else None
+        self.ids['dialog_content'].remove_widget(self.ids['placeholder'])
+        self.ids['dialog_content'].add_widget(
+            dialog_kwargs if dialog_kwargs else None)
 
     def set_callback(self, callback):
         self.callback = callback
