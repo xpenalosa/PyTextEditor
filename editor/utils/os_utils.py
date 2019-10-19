@@ -11,7 +11,6 @@ def check_file_exists(file_path):
 
 def create_file(file_path):
     if file_path and not check_file_exists(file_path):
-        Path(file_path).mkdir()
         Path(file_path).touch()
 
 

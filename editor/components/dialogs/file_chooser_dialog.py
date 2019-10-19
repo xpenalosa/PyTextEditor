@@ -2,14 +2,18 @@ from kivy.lang import Builder
 
 import os
 
+from kivy.properties import ObjectProperty
+
 from editor.components.dialogs.ok_cancel_dialog import OkCancelDialog
 
 
 class FileChooserDialog(OkCancelDialog):
 
+    dialog_widget = ObjectProperty()
+
     def __init__(self, **kwargs):
         path = kwargs.get("path", os.path.expanduser("~").replace("\\", "/"))
-        dialog_widget = Builder.load_string(f'''
+        self.dialog_widget = Builder.load_string(f'''
 BoxLayout:
     size: root.size
     pos: root.pos
@@ -31,10 +35,9 @@ BoxLayout:
         super(FileChooserDialog, self).__init__(
             **kwargs,
             title="Choose a file",
-            dialog_content=dialog_widget)
+            dialog_content=self.dialog_widget)
 
     def confirm(self):
-        # FIXME text_input not found
-        self.callback(self.ids['dialog_content'].ids['text_input'].text)
+        self.callback(self.dialog_widget.ids['text_input'].text)
         self.used_callback = True
         self.dismiss()
