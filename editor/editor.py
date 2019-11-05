@@ -12,6 +12,7 @@ from editor.components.toolbar import toolbar
 from editor.components.sidebar import sidebar
 from editor.components.console import console
 from editor.utils import os_utils
+from editor.components import codetab
 
 Builder.load_string("""
 #:kivy 1.11.1
@@ -58,19 +59,10 @@ class EditorWidget(Widget):
             self.running_process.kill()
 
     def new(self):
-        # Popup asking for file path and name
-        os_utils.create_save_file_dialog()
-        return
-        # FIXME
-        new_file = os.path.join(os.getcwd(), "tmp.py")
-        # Create file in system
-        Path(new_file).touch()
-        # Create or move to tab
-        code_tab = utils.get_or_create_tab(new_file)
-        self.append_tab(code_tab)
+        self.append_tab(codetab.CodeTab())
 
     def save(self):
-        utils.store_code_tab(self.tabbed_panel.current_tab)
+        self.tabbed_panel.current_tab.save_contents()
 
     def append_tab(self, code_tab):
         if code_tab not in self.tabbed_panel.tab_list:
@@ -78,6 +70,7 @@ class EditorWidget(Widget):
         self.tabbed_panel.switch_to(code_tab, do_scroll=True)
 
     def run_code(self):
+        self.tabbed_panel.current_tab.save_contents()
         out_file = self.tabbed_panel.current_tab.full_path
         console_log = self.ids['console_panel'].ids['console_log']
         # Clear previous execution output
