@@ -1,18 +1,14 @@
+import sys
+from subprocess import Popen, PIPE
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.widget import Widget
 
-from subprocess import Popen, PIPE
-import sys
-import os
-from pathlib import Path
-
-from editor import utils
+from editor.components import codetab
 from editor.components.toolbar import toolbar
 from editor.components.sidebar import sidebar
 from editor.components.console import console
-from editor.utils import os_utils
-from editor.components import codetab
 
 Builder.load_string("""
 #:kivy 1.11.1

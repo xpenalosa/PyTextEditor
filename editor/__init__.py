@@ -1,3 +1,1 @@
-from editor.editor import EditorApp as Editor
-
-version = "0.0.23"
+version = "0.0.24"

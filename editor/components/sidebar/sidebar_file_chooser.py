@@ -15,7 +15,6 @@ Builder.load_string("""
 
 
 class SidebarFileChooser(FileChooserListView):
-
     sidebar = ObjectProperty()
 
     def __init__(self, **kwargs):
@@ -37,6 +36,7 @@ class SidebarFileChooser(FileChooserListView):
             size_hint=(None, None),
             pos=touch_pos
         )
+        # TODO
         popup.set_options(
             ContextPopup.create_option("New", self.new_file),
             ContextPopup.create_option("New 2", self.new_file)
@@ -44,4 +44,5 @@ class SidebarFileChooser(FileChooserListView):
         popup.open()
 
     def new_file(self, *args, **kwargs):
+        # TODO
         print("Creating a new file")

@@ -1,13 +1,29 @@
+import os
+
+from kivy.cache import Cache
 from kivy.uix.codeinput import CodeInput
 from kivy.uix.tabbedpanel import TabbedPanelHeader
 
-import os
-
 from editor.components.dialogs.file_chooser_dialog import FileChooserDialog
-from editor.utils import lexer_utils, os_utils
+from editor.utils import lexer_utils
 
 
 class CodeTab(TabbedPanelHeader):
+
+    @staticmethod
+    def get_or_create(file_name):
+        """
+        Check whether an input file is already loaded as a code tab, or load it.
+
+        :param file_name: The input file name to check or create.
+        :return: The code tab corresponding to the input file.
+        """
+        code_tab = Cache.get("code_tabs", file_name)
+        if code_tab is None:
+            # Did not find tab, create it instead
+            code_tab = CodeTab(file=file_name)
+            Cache.append("code_tabs", key=file_name, obj=code_tab)
+        return code_tab
 
     def __init__(self, **kwargs):
         # Extract file from arguments

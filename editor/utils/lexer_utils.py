@@ -1,8 +1,7 @@
 from kivy.extras.highlight import KivyLexer
-
 from pygments.lexers import get_lexer_for_filename
-from pygments.util import ClassNotFound
 from pygments.lexers.special import TextLexer
+from pygments.util import ClassNotFound
 
 
 def get_code_lexer_for_filename(file_name):
