@@ -7,6 +7,8 @@ from kivy.uix.tabbedpanel import TabbedPanelHeader
 from editor.components.dialogs.file_chooser_dialog import FileChooserDialog
 from editor.utils import lexer_utils
 
+Cache.register("code_tabs")
+
 
 class CodeTab(TabbedPanelHeader):
 
@@ -21,38 +23,44 @@ class CodeTab(TabbedPanelHeader):
         code_tab = Cache.get("code_tabs", file_name)
         if code_tab is None:
             # Did not find tab, create it instead
-            code_tab = CodeTab(file=file_name)
+            code_tab = CodeTab(file_name=file_name)
             Cache.append("code_tabs", key=file_name, obj=code_tab)
         return code_tab
 
     def __init__(self, **kwargs):
         # Extract file from arguments
-        text_file = kwargs.pop("file", None)
+        file_name = kwargs.pop("file_name", None)
         super(CodeTab, self).__init__(**kwargs)
 
         # Initialize code input area
         self.code_input = CodeInput()
         # Assign file to hold the contents when saving or loading
-        self.full_path = text_file
-        if text_file is not None:
+        self.full_path = file_name
+        if file_name is not None:
             # Parse file argument
-            file_name = text_file.split(os.sep)[-1]
+            file_name = file_name.split(os.sep)[-1]
             # Populate CodeInput contents with file
-            with open(text_file, 'r') as f:
+            with open(file_name, 'r') as f:
                 self.code_input.text = f.read()
             # Set tab name
             self.set_tab_name(file_name)
             # Mark as already saved
-            self.is_unsaved = False
+            self.is_edited = False
+            # FIXME tab is marked as edited after loading
         else:
             # Assign temporal name
             self.set_tab_name("*new_file")
             # Mark as unsaved
-            self.is_unsaved = True
+            self.is_edited = True
         # Bind to text changed event
         self.code_input.bind(text=self._text_changed)
         # Assign code input to content for display
         self.content = self.code_input
+
+    def __del__(self):
+        # TODO ask for confirmation if file is unsaved
+        # Remove from cache
+        Cache.remove("code_tab", self.full_path)
 
     def set_tab_name(self, name: str):
         """
@@ -83,7 +91,7 @@ class CodeTab(TabbedPanelHeader):
         """
         Store the contents of the CodeInput into the assigned file.
 
-        If there is no file asssigned, a dialog is created to select the output
+        If there is no file assigned, a dialog is created to select the output
         file.
         """
         if self.full_path is None:
@@ -95,13 +103,13 @@ class CodeTab(TabbedPanelHeader):
             with open(self.full_path, 'w') as f:
                 f.write(self.content.text)
             # Contents changed
-            if self.is_unsaved:
+            if self.is_edited:
                 # Remove flag
-                self.is_unsaved = False
+                self.is_edited = False
                 # Remove indicator from tab name
                 self.text = self.text.lstrip("*")
 
     def _text_changed(self, instance, value):
-        if not self.is_unsaved:
-            self.is_unsaved = True
+        if not self.is_edited:
+            self.is_edited = True
             self.text = f"*{self.text}"

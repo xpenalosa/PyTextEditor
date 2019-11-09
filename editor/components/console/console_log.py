@@ -23,8 +23,9 @@ class ConsoleLog(CodeInput):
         self.lexer = TextLexer()
 
     def _get_bbcode(self, ntext):
-        # get bbcoded text for python
+        # get bb-coded text to log
         if ntext and len(ntext):
+            # Parse error lines
             ntext = ntext.replace(u'[ERR]', u'[/color][color=#ff3333]')
             ntext = ntext.replace(
                 u'[/ERR]',
@@ -39,3 +40,10 @@ class ConsoleLog(CodeInput):
 
     def clear_output(self):
         self.text = ""
+
+    def log(self, line):
+        self.text += line
+
+    def error(self, line):
+        # Add error tag to line before logging
+        self.log(f"[ERR]{line}[/ERR]")

@@ -75,11 +75,10 @@ class EditorWidget(Widget):
         self.running_process = Popen(["python", out_file],
                                      stdout=PIPE, stderr=PIPE)
         for line in iter(self.running_process.stdout.readline, b''):
-            console_log.text += line.decode('utf-8')
+            console_log.log(line.decode('utf-8'))
 
         for line in iter(self.running_process.stderr.readline, b''):
-            # Add error tag to each error line. Limited by implementation
-            console_log.text += f"[ERR]{line.decode('utf-8')}[/ERR]"
+            console_log.error(line.decode('utf-8'))
 
     def quit(self):
         if self.running_process:

@@ -1,9 +1,10 @@
 from kivy.input import MotionEvent
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
+from kivy.uix.bubble import Bubble
 from kivy.uix.filechooser import FileChooserListView
 
-from editor.components.dialogs.context_popup import ContextPopup
+from editor.components.sidebar.sidebar_popup import SidebarPopup
 
 Builder.load_string("""
 #:kivy 1.11.1
@@ -32,16 +33,11 @@ class SidebarFileChooser(FileChooserListView):
             return True
 
     def display_file_popup(self, touch_pos):
-        popup = ContextPopup(
-            size_hint=(None, None),
-            pos=touch_pos
-        )
-        # TODO
-        popup.set_options(
-            ContextPopup.create_option("New", self.new_file),
-            ContextPopup.create_option("New 2", self.new_file)
-        )
-        popup.open()
+        popup = SidebarPopup()
+        popup.add_option(SidebarPopup.create_option("New", self.new_file))
+        popup.add_option(SidebarPopup.create_option("New 2", self.new_file))
+        popup.pos = (touch_pos[0], touch_pos[1] - popup.size[1])
+        self.add_widget(popup)
 
     def new_file(self, *args, **kwargs):
         # TODO
